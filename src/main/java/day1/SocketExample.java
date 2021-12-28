@@ -14,7 +14,7 @@ import org.apache.flink.util.Collector;
  */
 
 //socket读取数据
-public class socketExample {
+public class SocketExample {
     public static void main(String[] args) throws Exception {
         //流环境
         StreamExecutionEnvironment senv = StreamExecutionEnvironment.getExecutionEnvironment();

@@ -13,7 +13,7 @@ import org.apache.flink.util.Collector;
  * @date 2021/12/21 17:47
  */
 //批处理数据
-public class batchExample {
+public class BatchExample {
 
     public static void main(String[] args) throws Exception {
         //流环境
@@ -28,20 +28,20 @@ public class batchExample {
         DataStreamSource<String> streamSource = senv.fromElements("hello world", "hello world", "kkk world","world");
 
         //设置输入和输出的泛型
-        SingleOutputStreamOperator<socketExample.WordWithCount> result = streamSource.flatMap(new FlatMapFunction<String, socketExample.WordWithCount>() {
+        SingleOutputStreamOperator<SocketExample.WordWithCount> result = streamSource.flatMap(new FlatMapFunction<String, SocketExample.WordWithCount>() {
             @Override
-            public void flatMap(String s, Collector<socketExample.WordWithCount> collector) throws Exception {
+            public void flatMap(String s, Collector<SocketExample.WordWithCount> collector) throws Exception {
                 String[] split = s.split(" ");
                 for (String s1 : split) {
-                    collector.collect(new socketExample.WordWithCount(s1, 1l));
+                    collector.collect(new SocketExample.WordWithCount(s1, 1l));
                 }
 
             }
         })
                 //分组
-                .keyBy(new KeySelector<socketExample.WordWithCount, String>() {
+                .keyBy(new KeySelector<SocketExample.WordWithCount, String>() {
                     @Override
-                    public String getKey(socketExample.WordWithCount wordWithCount) throws Exception {
+                    public String getKey(SocketExample.WordWithCount wordWithCount) throws Exception {
                         return wordWithCount.word;
                     }
                 })
@@ -49,10 +49,10 @@ public class batchExample {
                 //聚合
                 //reduce会维护一个累加器
                 //累加器和流中元素的类型一样
-                .reduce(new ReduceFunction<socketExample.WordWithCount>() {
+                .reduce(new ReduceFunction<SocketExample.WordWithCount>() {
                     @Override
-                    public socketExample.WordWithCount reduce(socketExample.WordWithCount wordWithCount, socketExample.WordWithCount t1) throws Exception {
-                        return new socketExample.WordWithCount(wordWithCount.word, wordWithCount.count + t1.count);
+                    public SocketExample.WordWithCount reduce(SocketExample.WordWithCount wordWithCount, SocketExample.WordWithCount t1) throws Exception {
+                        return new SocketExample.WordWithCount(wordWithCount.word, wordWithCount.count + t1.count);
                     }
                 });
 
