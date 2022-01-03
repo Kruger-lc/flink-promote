@@ -10,6 +10,7 @@ import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.util.Collector;
 
+import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -79,6 +80,10 @@ public class ProcessStatusExample {
                             long tmpTimer = ctx.timerService().currentProcessingTime() + 10 * 1000L;
                             ctx.timerService().registerProcessingTimeTimer(tmpTimer);
                             valuets.update(tmpTimer);
+                        }else if(valuets.value() < ctx.timerService().currentProcessingTime()){
+                            long tmpTimer = ctx.timerService().currentProcessingTime() + 10 * 1000L;
+                            ctx.timerService().registerProcessingTimeTimer(tmpTimer);
+                            valuets.update(tmpTimer);
                         }
                     }
 
@@ -87,6 +92,7 @@ public class ProcessStatusExample {
                         super.onTimer(timestamp, ctx, out);
                         if (valuets.value()!=null){
                             out.collect((double)valueState.value().f0/valueState.value().f1);
+                            System.out.println(new Timestamp(timestamp)+"触发了定时器！！！");
                         }
                     }
                 })
