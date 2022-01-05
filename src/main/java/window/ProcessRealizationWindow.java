@@ -48,7 +48,7 @@ public class ProcessRealizationWindow {
         public void processElement(Event value, Context ctx, Collector<String> out) throws Exception {
             long currTime = ctx.timerService().currentProcessingTime();
             long currWindowstartTime =currTime - currTime % windowSize;//获取当前窗口的开始时间
-            long currWindowendTime =currWindowstartTime + windowSize-1;//当前窗口的结束时间
+            long currWindowendTime =currWindowstartTime + windowSize;//当前窗口的结束时间
 
             if (mapState.contains(currWindowstartTime)) {
                 mapState.put(currWindowstartTime,mapState.get(currWindowstartTime)+1);
