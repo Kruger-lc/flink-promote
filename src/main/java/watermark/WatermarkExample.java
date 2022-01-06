@@ -18,6 +18,11 @@ import java.time.Duration;
  * @author lc
  * @date 2022/1/6 16:14
  */
+
+//关于watermark的理解的两种情况：第一种解释如果是水位线一下的数据直接放弃的话，会存在丢未计算窗口的数据，所以关于水位线只能是第二种解释
+//                           或者说根本不存在水位线一下的数据直接放弃，而是结束时间低于水位线的窗口的数据放弃，这样可以解释第一情况
+//1.水位线 = 已经到来的最大事件时间 - 延迟计算时间 -1
+ //2.水位线 = 上个窗口结束时间 + 延迟时间 -1
 public class WatermarkExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
